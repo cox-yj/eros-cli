@@ -183,7 +183,10 @@ function writeJson({ jsVersion, platform }) {
         shell.mkdir('-p', tmpJsPath);
         shell.cp('-r', process.cwd() + '/dist/js/**/*.zip', tmpJsPath);
         shell.rm('-rf', jsPath);
-        fs.rename(tmpJsPath, jsPath);
+        fs.rename(tmpJsPath, jsPath, err => {
+            if (err) throw err;
+            console.log('done!');
+        });
         if (requestUrl) {
             __request.post(requestUrl, {
                 form: versionInfo
